@@ -45,3 +45,12 @@
     color: white;
     border: none;
 }
+
+.edit-textarea {
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-family: inherit;
+}

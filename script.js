@@ -88,6 +88,7 @@ commentsContainer.addEventListener("click", (e) => {
   const replyBtn = e.target.closest(".reply");
   if (replyBtn) {
     const commentEl = replyBtn.closest(".comment");
+    const id = Number(commentEl.dataset.id);
     //Remove any existing reply form
     document.querySelectorAll(".reply-form").forEach((f) => f.remove());
 
@@ -102,6 +103,14 @@ commentsContainer.addEventListener("click", (e) => {
       e.preventDefault();
       submitReply(id, form, username);
     });
+  }
+
+  const editBtn = e.target.closest(".edit");
+  if (editBtn) {
+    const commentEl = editBtn.closest(".comment");
+    const id = Number(commentEl.dataset.id);
+
+    toggleEdit(commentEl, id, editBtn);
   }
 });
 
@@ -159,4 +168,33 @@ function submitReply(parentId, form, replyingTo) {
   parent.replies.push(newReply);
 
   renderComments(data.comments);
+}
+
+function toggleEdit(commentEl, id, editBtn) {
+  const comment = findCommentById(data.comments, id);
+  if (!comment) return;
+
+  const textEl = commentEl.querySelector(".comment-text");
+
+  //If already editing ➡️ update
+  if (editBtn.textContent === "Update") {
+    const textarea = textEl.querySelector("textarea");
+    const newContent = textarea.value.trim();
+
+    if (!newContent) return;
+
+    comment.content = newContent;
+    renderComments(data.comments);
+    return;
+  }
+
+  //Enter edit mode
+  const textarea = document.createElement("textarea");
+  textarea.value = comment.content;
+  textarea.className = "edit-textarea";
+
+  textEl.innerHTML = "";
+  textEl.appendChild(textarea);
+
+  editBtn.textContent = "Update";
 }
