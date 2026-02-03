@@ -21,3 +21,27 @@
 .reply {
     margin-top: 1rem;
 }
+
+.reply-form {
+    margin-left: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.reply-form textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 0.75rem;
+    border-radius: 8px;
+    resize: none;
+}
+
+.reply-form button {
+    align-self: flex-end;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    background: #5357b6;
+    color: white;
+    border: none;
+}

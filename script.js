@@ -47,7 +47,7 @@ function createComment(comment, isReply = false) {
       </div>
 
       <div class="comment-body">
-        <div class="comment-header>
+        <div class="comment-header">
           <img src="${comment.user.image.png}" alt="${comment.user.username}" >
           <strong>${comment.user.username}</strong>
           ${isCurrentUser ? `<span class="you-badge">you</span>` : ""}
@@ -76,14 +76,33 @@ function createComment(comment, isReply = false) {
 }
 
 commentsContainer.addEventListener("click", (e) => {
-  const btn = e.target.closest(".vote-btn");
-  if (!btn) return;
+  const voteBtn = e.target.closest(".vote-btn");
+  if (voteBtn) {
+    const commentEl = voteBtn.closest(".comment");
+    const id = Number(commentEl.dataset.id);
+    const delta = voteBtn.classList.contains("plus") ? 1 : -1;
+    updateScore(id, delta);
+    return;
+  }
 
-  const commentEl = e.target.closest(".comment");
-  const id = Number(commentEl.dataset.id);
+  const replyBtn = e.target.closest(".reply");
+  if (replyBtn) {
+    const commentEl = replyBtn.closest(".comment");
+    //Remove any existing reply form
+    document.querySelectorAll(".reply-form").forEach((f) => f.remove());
 
-  const delta = btn.classList.contains("plus") ? 1 : -1;
-  updateScore(id, delta);
+    const username = commentEl.querySelector(
+      ".comment-header strong",
+    ).textContent;
+
+    const form = createReplyForm(username);
+    commentEl.after(form);
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      submitReply(id, form, username);
+    });
+  }
 });
 
 function updateScore(id, delta) {
@@ -105,4 +124,39 @@ function findCommentById(comments, id) {
     }
   }
   return null;
+}
+
+function createReplyForm(replyingTo) {
+  const form = document.createElement("form");
+  form.className = "reply-form";
+
+  form.innerHTML = `
+    <textarea required>@${replyingTo} </textarea>
+    <button type="submit">REPLY</button>
+  `;
+
+  return form;
+}
+
+function submitReply(parentId, form, replyingTo) {
+  const textarea = form.querySelector("textarea");
+  const content = textarea.value.replace(`@${replyingTo}`, "").trim();
+
+  if (!content) return;
+
+  const parent = findCommentById(data.comments, parentId);
+  if (!parent) return;
+
+  const newReply = {
+    id: Date.now(),
+    content,
+    createdAt: "Just now",
+    score: 0,
+    replyingTo,
+    user: data.currentUser,
+  };
+
+  parent.replies.push(newReply);
+
+  renderComments(data.comments);
 }
