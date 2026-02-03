@@ -35,14 +35,15 @@ function renderComments(comments) {
 function createComment(comment, isReply = false) {
   const div = document.createElement("div");
   div.className = isReply ? "comment reply" : "comment";
+  div.dataset.id = comment.id;
 
   const isCurrentUser = comment.user.username === data.currentUser.username;
 
   div.innerHTML = `
-      <div class="vote-box>
-        <button>+</button>
+      <div class="vote-box">
+        <button class="vote-btn plus">+</button>
         <span>${comment.score}</span>
-        <button>-</button>
+        <button class="vote-btn minus">-</button>
       </div>
 
       <div class="comment-body">
@@ -72,4 +73,36 @@ function createComment(comment, isReply = false) {
     `;
 
   return div;
+}
+
+commentsContainer.addEventListener("click", (e) => {
+  const btn = e.target.closest(".vote-btn");
+  if (!btn) return;
+
+  const commentEl = e.target.closest(".comment");
+  const id = Number(commentEl.dataset.id);
+
+  const delta = btn.classList.contains("plus") ? 1 : -1;
+  updateScore(id, delta);
+});
+
+function updateScore(id, delta) {
+  const comment = findCommentById(data.comments, id);
+  if (!comment) return;
+
+  comment.score = Math.max(0, comment.score + delta);
+
+  renderComments(data.comments);
+}
+
+function findCommentById(comments, id) {
+  for (const comment of comments) {
+    if (comment.id === id) return comment;
+
+    if (comment.replies?.length) {
+      const found = findCommentById(comment.replies, id);
+      if (found) return found;
+    }
+  }
+  return null;
 }
