@@ -72,9 +72,9 @@ function createComment(comment, isReply = false) {
           <div class="actions">
             ${
               isCurrentUser
-                ? `<button class="delete">Delete</button>
-                     <button class="edit">Edit</button>`
-                : `<button class="reply">Reply</button>`
+                ? `<button class="delete"><img class="button-icon" src="./images/icon-delete.svg">Delete</button>
+                     <button class="edit"><img class="button-icon" src="./images/icon-edit.svg">Edit</button>`
+                : `<button class="reply"><img class="button-icon" src="./images/icon-reply.svg">Reply</button>`
             }
           </div>
         </div>

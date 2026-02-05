@@ -1,15 +1,109 @@
+body {
+    background: rgba(227, 228, 231, 0.625);
+}
+
 .comments {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    /*the codes below prevent edge-to-edge text on phones*/
+    max-width: 730px;    
+    margin: 1rem auto;
+    padding: 0 1rem;
 }
 
 .comment {
     display: flex;
+    align-items: center;
     gap: 1rem;
     background: white;
     padding: 1rem;
     border-radius: 8px;
+    max-height: 200px;
+}
+
+.vote-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    background: rgba(227, 228, 231, 0.625);
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #7e81c0;
+}
+
+.vote-btn.plus,
+.vote-btn.minus {
+    border: none;
+    font-size: 16px;
+    color: #5357b6;
+}
+
+.vote-btn.plus:hover, 
+.vote-btn.minus:hover {
+    cursor: pointer;
+}
+
+.comment-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-header {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.comment-header img {
+    height: 30px;
+    width: 30px;
+}
+
+.you-badge {
+    background:#6e72ba;
+    color: white;
+    width: 30px;
+    text-align: center;
+    padding: 1px;
+}
+
+.actions {
+    display: flex;
+    gap: 0.7rem;
+    margin-left: auto;
+}
+
+.actions button {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 20px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    background: white;
+    color: #11133262;
+    border: none;
+}
+
+/*.delete {
+    color: red;
+}*/
+
+.button-icon {
+    width: 10px;
+    height: 10px;
+    object-fit: contain;
+}
+
+.mention {
+    color: #6e72ba;
+    font-weight: bold;
 }
 
 .replies {
@@ -46,7 +140,8 @@
     border: none;
 }
 
-.edit-textarea {
+.edit-textarea,
+.reply-form textarea {
     width: 100%;
     min-height: 80px;
     resize: vertical;
@@ -73,6 +168,7 @@
     background: white;
     padding: 1.5rem;
     border-radius: 8px;
+    width: 90%;
     max-width: 320px;
     text-align: center;
 }
@@ -91,6 +187,7 @@
     border: none;
     padding: 0.6rem;
     border-radius: 6px;
+    min-height: 44px;
 }
 
 .cancel-btn:hover, 
@@ -104,4 +201,27 @@
 
 .confirm-btn {
     background: red;
+}
+
+@media (max-width: 600px) {
+    .comment {
+        flex-direction: column;
+        min-height: 250px;
+    }
+
+    .vote-box {
+        order: 2;
+        display: flex;
+        align-self: self-start;
+    }
+
+    .actions{
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .replies {
+        margin-left: 0;
+        padding-left: 0;
+    }
 }
