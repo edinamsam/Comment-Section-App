@@ -2,17 +2,30 @@ const commentsContainer = document.querySelector(".comments");
 const modal = document.getElementById("delete-modal");
 const cancelBtn = document.querySelector(".cancel-btn");
 const confirmBtn = document.querySelector(".confirm-btn");
+const STORAGE_KEY = "comments-data";
 
 let data;
 let deleteTargetId = null;
 
-fetch("./data.json")
-  .then((res) => res.json())
-  .then((json) => {
-    data = json;
-    renderComments(data.comments);
-  })
-  .catch((err) => console.error(err));
+const storedData = localStorage.getItem(STORAGE_KEY);
+
+if (storedData) {
+  data = JSON.parse(storedData);
+  renderComments(data.comments);
+} else {
+  fetch("./data.json")
+    .then((res) => res.json())
+    .then((json) => {
+      data = json;
+      saveToStorage();
+      renderComments(data.comments);
+    })
+    .catch((err) => console.error(err));
+}
+
+function saveToStorage() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
 
 function renderComments(comments) {
   commentsContainer.innerHTML = "";
@@ -146,7 +159,7 @@ function updateScore(id, delta) {
   if (!comment) return;
 
   comment.score = Math.max(0, comment.score + delta);
-
+  saveToStorage();
   renderComments(data.comments);
 }
 
@@ -193,7 +206,7 @@ function submitReply(parentId, form, replyingTo) {
   };
 
   parent.replies.push(newReply);
-
+  saveToStorage();
   renderComments(data.comments);
 }
 
@@ -211,6 +224,7 @@ function toggleEdit(commentEl, id, editBtn) {
     if (!newContent) return;
 
     comment.content = newContent;
+    saveToStorage();
     renderComments(data.comments);
     return;
   }
@@ -236,6 +250,7 @@ function deleteCommentById(comments, id) {
   for (const comment of comments) {
     if (comment.replies?.length) {
       const deleted = deleteCommentById(comment.replies, id);
+      saveToStorage();
       if (deleted) return true;
     }
   }
