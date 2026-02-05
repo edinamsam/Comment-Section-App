@@ -54,3 +54,54 @@
     border-radius: 6px;
     font-family: inherit;
 }
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    max-width: 320px;
+    text-align: center;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.cancel-btn, 
+.confirm-btn {
+    flex: 1;
+    color: white;
+    border: none;
+    padding: 0.6rem;
+    border-radius: 6px;
+}
+
+.cancel-btn:hover, 
+.confirm-btn:hover {
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background: gray;
+}
+
+.confirm-btn {
+    background: red;
+}

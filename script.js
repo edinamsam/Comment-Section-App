@@ -1,6 +1,10 @@
 const commentsContainer = document.querySelector(".comments");
+const modal = document.getElementById("delete-modal");
+const cancelBtn = document.querySelector(".cancel-btn");
+const confirmBtn = document.querySelector(".confirm-btn");
 
 let data;
+let deleteTargetId = null;
 
 fetch("./data.json")
   .then((res) => res.json())
@@ -112,6 +116,29 @@ commentsContainer.addEventListener("click", (e) => {
 
     toggleEdit(commentEl, id, editBtn);
   }
+
+  const deleteBtn = e.target.closest(".delete");
+  if (deleteBtn) {
+    const commentEl = deleteBtn.closest(".comment");
+    deleteTargetId = Number(commentEl.dataset.id);
+
+    modal.classList.remove("hidden");
+  }
+});
+
+cancelBtn.addEventListener("click", () => {
+  deleteTargetId = null;
+  modal.classList.add("hidden");
+});
+
+confirmBtn.addEventListener("click", () => {
+  if (deleteTargetId === null) return;
+
+  deleteCommentById(data.comments, deleteTargetId);
+  deleteTargetId = null;
+
+  modal.classList.add("hidden");
+  renderComments(data.comments);
 });
 
 function updateScore(id, delta) {
@@ -198,3 +225,27 @@ function toggleEdit(commentEl, id, editBtn) {
 
   editBtn.textContent = "Update";
 }
+
+function deleteCommentById(comments, id) {
+  const index = comments.findIndex((c) => c.id === id);
+  if (index !== -1) {
+    comments.splice(index, 1);
+    return true;
+  }
+
+  for (const comment of comments) {
+    if (comment.replies?.length) {
+      const deleted = deleteCommentById(comment.replies, id);
+      if (deleted) return true;
+    }
+  }
+
+  return false;
+}
+
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    modal.classList.add("hidden");
+    deleteTargetId = null;
+  }
+});
