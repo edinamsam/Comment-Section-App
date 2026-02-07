@@ -69,14 +69,6 @@ function createComment(comment, isReply = false) {
           <strong>${comment.user.username}</strong>
           ${isCurrentUser ? `<span class="you-badge">you</span>` : ""}
           <span class="time">${comment.createdAt}</span>
-          <div class="actions">
-            ${
-              isCurrentUser
-                ? `<button class="delete"><img class="button-icon" src="./images/icon-delete.svg">Delete</button>
-                     <button class="edit"><img class="button-icon" src="./images/icon-edit.svg">Edit</button>`
-                : `<button class="reply"><img class="button-icon" src="./images/icon-reply.svg">Reply</button>`
-            }
-          </div>
         </div>
         <p class="comment-text">
             ${
@@ -87,6 +79,15 @@ function createComment(comment, isReply = false) {
             ${comment.content}
           </p>
       </div>
+
+      <div class="actions">
+            ${
+              isCurrentUser
+                ? `<button class="delete"><img class="button-icon" src="./images/icon-delete.svg">Delete</button>
+                     <button class="edit"><img class="button-icon" src="./images/icon-edit.svg">Edit</button>`
+                : `<button class="reply"><img class="button-icon" src="./images/icon-reply.svg">Reply</button>`
+            }
+          </div>
     `;
 
   return div;

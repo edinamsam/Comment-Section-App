@@ -19,7 +19,6 @@ body {
     background: white;
     padding: 1rem;
     border-radius: 8px;
-    max-height: 200px;
 }
 
 .vote-box {
@@ -109,7 +108,7 @@ body {
 .replies {
     margin-left: 2.5rem;
     padding-left: 1.5rem;
-    border-left: 2px solid #eee;
+    border-left: 2px solid #c1baba;
 }
 
 .reply {
@@ -205,23 +204,43 @@ body {
 
 @media (max-width: 600px) {
     .comment {
-        flex-direction: column;
-        min-height: 250px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas: 
+             "header header"
+             "text   text"
+             "vote   actions"
+        ;
+        gap: 1rem;
     }
 
     .vote-box {
-        order: 2;
-        display: flex;
-        align-self: self-start;
+        grid-area: vote;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        padding: 5px;
+        gap: 0.2rem;
     }
 
-    .actions{
-        display: flex;
-        gap: 0.75rem;
+    .comment-header {
+        grid-area: header;
+    }
+
+    .comment-body {
+        grid-area: text;
+    }
+    
+    .actions {
+        grid-area: actions;
+        justify-content: flex-end;
+        flex-wrap: wrap;
     }
 
     .replies {
-        margin-left: 0;
-        padding-left: 0;
+        width: 100%;
+        margin-left: 5px;
+        padding-left: 5px;
     }
 }
